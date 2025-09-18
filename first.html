@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TejasLink — Health Records</title>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind config for fonts and colors
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'],
+          },
+          colors: {
+            brand: {
+              50:  '#eef7ff',
+              100: '#d9edff',
+              200: '#b3dcff',
+              300: '#85c6ff',
+              400: '#54a9ff',
+              500: '#2a8dff',
+              600: '#186ee6',
+              700: '#1457b4',
+              800: '#114b94',
+              900: '#0f3f78',
+            }
+          }
+        }
+      },
+      darkMode: 'class'
+    }
+  </script>
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* Smooth transitions for theme and view changes */
+    .fade-enter { opacity: 0; transform: translateY(8px); }
+    .fade-enter-active { transition: all .28s ease; opacity: 1; transform: translateY(0); }
+    .fade-leave { opacity: 1; transform: translateY(0); }
+    .fade-leave-active { transition: all .2s ease; opacity: 0; transform: translateY(-8px); }
+
+    /* Gradient background */
+    .bg-grad {
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(42,141,255,.25), transparent 60%),
+                  radial-gradient(1000px 500px at 10% -20%, rgba(20,87,180,.2), transparent 60%),
+                  linear-gradient(180deg, rgba(17,75,148,.07), transparent 45%);
+    }
+    .dark .bg-grad {
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(42,141,255,.18), transparent 60%),
+                  radial-gradient(1000px 500px at 10% -20%, rgba(20,87,180,.16), transparent 60%),
+                  linear-gradient(180deg, rgba(255,255,255,.02), transparent 45%);
+    }
+
+    /* Focus styles for better accessibility */
+    .focus-ring:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    /* Card shadow */
+    .soft-shadow { box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+    .dark .soft-shadow { box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+
+    /* Demo banner pin */
+    .demo-pin {
+      position: fixed;
+      left: 1rem;
+      bottom: 1rem;
+      z-index: 50;
+    }
+  </style>
+</head>
+<body class="h-full bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans antialiased selection:bg-brand-200 selection:text-brand-900">
+  <!-- Persistent Top Bar -->
+  <header class="w-full border-b border-neutral-200/70 dark:border-neutral-800/80 bg-white/70 dark:bg-neutral-950/70 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="h-16 flex items-center justify-between gap-4">
+        <!-- Logo -->
+        <a href="#/" class="flex items-center gap-3 group">
+          <div class="relative">
+            <!-- Simple medical cross in a circle -->
+            <svg width="36" height="36" viewBox="0 0 48 48" fill="none" class="drop-shadow-sm">
+              <circle cx="24" cy="24" r="22" class="fill-brand-500/10 stroke-brand-600" stroke-width="2"></circle>
+              <path d="M24 14v20M14 24h20" class="stroke-brand-600" stroke-width="3.5" stroke-linecap="round"></path>
+            </svg>
+            <span class="sr-only">TejasLink</span>
+          </div>
+          <div class="leading-tight">
+            <div class="text-lg font-extrabold tracking-tight">TejasLink</div>
+            <div class="text-[11px] uppercase tracking-[0.16em] text-neutral-500 dark:text-neutral-400" data-i18n="tagline">Health Records</div>
+          </div>
+        </a>
+
+        <!-- Right Controls -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Language selector -->
+          <label class="sr-only" for="langSelect">Language</label>
+          <div class="relative">
+            <select id="langSelect" class="appearance-none pr-9 pl-3 py-2 rounded-md bg-neutral-100 dark:bg-neutral-900 text-sm border border-neutral-200 dark:border-neutral-800 focus-ring">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+            </select>
+            <div class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-neutral-500">
+              ▼
+            </div>
+          </div>
+
+          <!-- Theme toggle -->
+          <button id="themeToggle" class="inline-flex items-center gap-2 px-3 py-2 rounded-md border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 text-sm font-medium hover:bg-neutral-200/70 dark:hover:bg-neutral-800 focus-ring" aria-pressed="false">
+            <span class="w-4 h-4 grid place-items-center" aria-hidden="true">
+              <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 hidden dark:inline" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="4" stroke-width="1.6"/>
+                <g stroke-width="1.6"><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l-1.4-1.4M20.4 20.4L19 19M5 19l-1.4 1.4M20.4 3.6L19 5"/></g>
+              </svg>
+              <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 dark:hidden" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79z"/>
+              </svg>
+            </span>
+            <span class="hidden sm:inline" data-i18n="toggleTheme">Theme</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Background decoration -->
+  <div class="fixed inset-0 -z-10 bg-grad"></div>
+
+  <!-- Main App Container -->
+  <main id="app" class="max-w-6xl mx-auto px-4 sm:px-6">
+    <!-- Views injected here -->
+  </main>
+
+  <!-- Demo disclosure -->
+  <div class="demo-pin">
+    <div class="rounded-full px-4 py-2 text-xs sm:text-sm bg-amber-100 text-amber-900 border border-amber-300 dark:bg-amber-900/30 dark:text-amber-200 dark:border-amber-800">
+      Demo only — no real sign‑in. Please don’t enter sensitive data.
+    </div>
+  </div>
+
+  <script>
+    // State: theme, language, role, user
+    const state = {
+      lang: localStorage.getItem('tl_lang') || 'en',
+      theme: localStorage.getItem('tl_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+      role: null,
+      user: JSON.parse(localStorage.getItem('tl_user') || 'null')
+    };
+
+    // Translations
+    const t = {
+      en: {
+        tagline: "Health Records",
+        whoAreYou: "Who are you?",
+        welcomeTitle: "Welcome to TejasLink Health Records",
+        welcomeSubtitle: "Choose your role to continue",
+        doctor: "Doctor",
+        patient: "Patient",
+        continue: "Continue",
+        signInTitleDoctor: "Doctor — Demo Access",
+        signInTitlePatient: "Patient — Demo Access",
+        name: "Full name",
+        email: "Email (for demo)",
+        id: "Medical ID (optional)",
+        access: "Enter",
+        noAccount: "New here?",
+        signUp: "Sign up",
+        signUpTitleDoctor: "Doctor — Create Demo Profile",
+        signUpTitlePatient: "Patient — Create Demo Profile",
+        create: "Create",
+        back: "Back",
+        toggleTheme: "Theme",
+        successWelcomeDoctor: "Welcome, Doctor",
+        successWelcomePatient: "Welcome",
+        langNote: "Language",
+        demoNote: "Demo only — no real sign‑in. Please don’t enter sensitive data.",
+        homeCta: "Go to home",
+        signOut: "Sign out",
+        dashboardTitleDoctor: "Doctor Dashboard",
+        dashboardTitlePatient: "Patient Dashboard",
+        dashboardDescDoctor: "Quick access to your patients' demo records.",
+        dashboardDescPatient: "View and manage your demo health profile.",
+      },
+      hi: {
+        tagline: "स्वास्थ्य रेकॉर्ड",
+        whoAreYou: "आप कौन हैं?",
+        welcomeTitle: "TejasLink स्वास्थ्य रेकॉर्ड में आपका स्वागत है",
+        welcomeSubtitle: "आगे बढ़ने के लिए अपनी भूमिका चुनें",
+        doctor: "डॉक्टर",
+        patient: "मरीज़",
+        continue: "जारी रखें",
+        signInTitleDoctor: "डॉक्टर — डेमो एक्सेस",
+        signInTitlePatient: "मरीज़ — डेमो एक्सेस",
+        name: "पूरा नाम",
+        email: "ईमेल (डेमो के लिए)",
+        id: "मेडिकल आईडी (वैकल्पिक)",
+        access: "प्रवेश करें",
+        noAccount: "नए हैं?",
+        signUp: "साइन अप",
+        signUpTitleDoctor: "डॉक्टर — डेमो प्रोफ़ाइल बनाएँ",
+        signUpTitlePatient: "मरीज़ — डेमो प्रोफ़ाइल बनाएँ",
+        create: "बनाएँ",
+        back: "वापस",
+        toggleTheme: "थीम",
+        successWelcomeDoctor: "स्वागत है, डॉक्टर",
+        successWelcomePatient: "स्वागत है",
+        langNote: "भाषा",
+        demoNote: "केवल डेमो — वास्तविक साइन‑इन नहीं। कृपया संवेदनशील जानकारी न डालें।",
+        homeCta: "होम पर जाएँ",
+        signOut: "साइन आउट",
+        dashboardTitleDoctor: "डॉक्टर डैशबोर्ड",
+        dashboardTitlePatient: "मरीज़ डैशबोर्ड",
+        dashboardDescDoctor: "अपने मरीजों के डेमो रेकॉर्ड तक जल्दी पहुँच।",
+        dashboardDescPatient: "अपनी डेमो स्वास्थ्य प्रोफ़ाइल देखें और प्रबंधित करें।",
+      }
+    };
+
+    // Apply theme
+    function applyTheme() {
+      const html = document.documentElement;
+      if (state.theme === 'dark') html.classList.add('dark');
+      else html.classList.remove('dark');
+      localStorage.setItem('tl_theme', state.theme);
+      const btn = document.getElementById('themeToggle');
+      if (btn) btn.setAttribute('aria-pressed', state.theme === 'dark');
+    }
+
+    // i18n rendering for static labels
+    function applyStaticI18n() {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        el.textContent = t[state.lang][key] || '';
+      });
+      document.getElementById('langSelect').value = state.lang;
+      document.getElementById('themeToggle')?.querySelector('span:last-child')?.replaceWith((() => {
+        const span = document.createElement('span');
+        span.className = 'hidden sm:inline';
+        span.setAttribute('data-i18n','toggleTheme');
+        span.textContent = t[state.lang].toggleTheme;
+        return span;
+      })());
+      // Update demo banner
+      const demo = document.querySelector('.demo-pin div');
+      if (demo) demo.textContent = t[state.lang].demoNote;
+    }
+
+    // Routing
+    const routes = {
+      '/': renderHome,
+      '/doctor-signin': () => renderSignin('doctor'),
+      '/patient-signin': () => renderSignin('patient'),
+      '/doctor-signup': () => renderSignup('doctor'),
+      '/patient-signup': () => renderSignup('patient'),
+      '/dashboard': renderDashboard
+    };
+
+    function navigate(path) {
+      if (location.hash !== '#' + path) location.hash = path;
+      else render(); // same route re-render
+    }
+
+    function render() {
+      const app = document.getElementById('app');
+      const route = (location.hash || '#/').slice(1);
+      const view = routes[route] || routes['/'];
+      // simple fade transition
+      const old = app.firstElementChild;
+      const temp = document.createElement('div');
+      temp.className = 'fade-enter';
+      app.appendChild(temp);
+      setTimeout(() => {
+        temp.classList.add('fade-enter-active');
+      }, 10);
+      // render content
+      app.innerHTML = view();
+      applyStaticI18n();
+      // finalize transition
+      const main = app.firstElementChild;
+      if (main) {
+        main.classList.add('fade-enter');
+        setTimeout(() => main.classList.add('fade-enter-active'), 10);
+        setTimeout(() => {
+          main.classList.remove('fade-enter', 'fade-enter-active');
+        }, 300);
+      }
+      bindInteractions();
+    }
+
+    // Views
+    function renderHome() {
+      return `
+        <section class="min-h-[calc(100vh-4rem)] grid place-items-center py-10">
+          <div class="w-full max-w-3xl mx-auto">
+            <div class="text-center mb-8 sm:mb-10">
+              <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+                <span data-i18n="welcomeTitle">Welcome to TejasLink Health Records</span>
+              </h1>
+              <p class="text-neutral-600 dark:text-neutral-300 text-base sm:text-lg" data-i18n="welcomeSubtitle">Choose your role to continue</p>
+            </div>
+
+            <div class="rounded-2xl soft-shadow border border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/60 backdrop-blur p-6 sm:p-8">
+              <div class="text-center mb-6">
+                <div class="text-sm uppercase tracking-widest text-neutral-500 dark:text-neutral-400 mb-2" data-i18n="whoAreYou">Who are you?</div>
+                <div class="h-1 w-16 mx-auto rounded-full bg-brand-500/60"></div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <!-- Doctor card -->
+                <button id="btnDoctor" class="group rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 sm:p-6 text-left hover:-translate-y-0.5 transition-transform soft-shadow focus-ring w-full">
+                  <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-lg bg-brand-500/10 text-brand-700 dark:text-brand-300 grid place-items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5ZM21 20a8.5 8.5 0 0 0-17 0 1 1 0 0 0 1 1h15a1 1 0 0 0 1-1Z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="text-lg font-semibold" data-i18n="doctor">Doctor</div>
+                      <div class="text-sm text-neutral-600 dark:text-neutral-400">MBBS, MD, Specialist</div>
+                    </div>
+                    <div class="ml-auto text-brand-700 dark:text-brand-300 group-hover:translate-x-0.5 transition-transform">→</div>
+                  </div>
+                </button>
+
+                <!-- Patient card -->
+                <button id="btnPatient" class="group rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 sm:p-6 text-left hover:-translate-y-0.5 transition-transform soft-shadow focus-ring w-full">
+                  <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-lg bg-brand-500/10 text-brand-700 dark:text-brand-300 grid place-items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 13a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm6 8H6a1 1 0 0 1-1-1 7 7 0 0 1 14 0 1 1 0 0 1-1 1Z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="text-lg font-semibold" data-i18n="patient">Patient</div>
+                      <div class="text-sm text-neutral-600 dark:text-neutral-400">Care & Records</div>
+                    </div>
+                    <div class="ml-auto text-brand-700 dark:text-brand-300 group-hover:translate-x-0.5 transition-transform">→</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderSignin(role) {
+      state.role = role;
+      const titleKey = role === 'doctor' ? 'signInTitleDoctor' : 'signInTitlePatient';
+      return `
+        <section class="min-h-[calc(100vh-4rem)] grid place-items-center py-10">
+          <div class="w-full max-w-xl">
+            <div class="rounded-2xl soft-shadow border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/70 backdrop-blur p-6 sm:p-8">
+              <button id="backHome" class="text-sm text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white mb-4 inline-flex items-center gap-2 focus-ring"><span>←</span><span data-i18n="back">Back</span></button>
+              <h2 class="text-2xl sm:text-3xl font-extrabold mb-1" data-i18n="${titleKey}">Demo Access</h2>
+              <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-6">${t[state.lang].demoNote}</p>
+
+              <form id="signinForm" class="space-y-4">
+                <div>
+                  <label class="block text-sm mb-1" for="name" data-i18n="name">Full name</label>
+                  <input id="name" name="name" type="text" required placeholder="${t[state.lang].name}" class="w-full px-3 py-2 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus-ring"/>
+                </div>
+                <div>
+                  <label class="block text-sm mb-1" for="email" data-i18n="email">Email (for demo)</label>
+                  <input id="email" name="email" type="email" placeholder="${t[state.lang].email}" class="w-full px-3 py-2 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus-ring"/>
+                </div>
+                <div>
+                  <label class="block text-sm mb-1" for="id" data-i18n="id">Medical ID (optional)</label>
+                  <input id="id" name="id" type="text" placeholder="${t[state.lang].id}" class="w-full px-3 py-2 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus-ring"/>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                  <button type="submit" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-brand-600 hover:bg-brand-700 text-white font-semibold focus-ring">
+                    <span data-i18n="access">Enter</span>
+                  </button>
+                  <div class="sm:ml-auto text-sm flex items-center gap-2">
+                    <span class="text-neutral-600 dark:text-neutral-400" data-i18n="noAccount">New here?</span>
+                    <a id="goSignup" class="text-brand-700 dark:text-brand-300 font-semibold hover:underline cursor-pointer" data-i18n="signUp">Sign up</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderSignup(role) {
+      const titleKey = role === 'doctor' ? 'signUpTitleDoctor' : 'signUpTitlePatient';
+      return `
+        <section class="min-h-[calc(100vh-4rem)] grid place-items-center py-10">
+          <div class="w-full max-w-xl">
+            <div class="rounded-2xl soft-shadow border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/70 backdrop-blur p-6 sm:p-8">
+              <button id="backToSignin" class="text-sm text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white mb-4 inline-flex items-center gap-2 focus-ring"><span>←</span><span data-i18n="back">Back</span></button>
+              <h2 class="text-2xl sm:text-3xl font-extrabold mb-1" data-i18n="${titleKey}">Create Demo Profile</h2>
+              <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-6">${t[state.lang].demoNote}</p>
+
+              <form id="signupForm" class="space-y-4">
+                <div>
+                  <label class="block text-sm mb-1" for="sname" data-i18n="name">Full name</label>
+                  <input id="sname" name="sname" type="text" required placeholder="${t[state.lang].name}" class="w-full px-3 py-2 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus-ring"/>
+                </div>
+                <div>
+                  <label class="block text-sm mb-1" for="semail" data-i18n="email">Email (for demo)</label>
+                  <input id="semail" name="semail" type="email" placeholder="${t[state.lang].email}" class="w-full px-3 py-2 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus-ring"/>
+                </div>
+                <div>
+                  <label class="block text-sm mb-1" for="sid" data-i18n="id">Medical ID (optional)</label>
+                  <input id="sid" name="sid" type="text" placeholder="${t[state.lang].id}" class="w-full px-3 py-2 rounded-md bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 focus-ring"/>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                  <button type="submit" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-md bg-brand-600 hover:bg-brand-700 text-white font-semibold focus-ring">
+                    <span data-i18n="create">Create</span>
+                  </button>
+                  <a id="backToHome" class="sm:ml-auto inline-flex items-center gap-2 text-brand-700 dark:text-brand-300 font-semibold hover:underline cursor-pointer">
+                    <span>←</span><span data-i18n="homeCta">Go to home</span>
+                  </a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderDashboard() {
+      const isDoctor = state.user?.role === 'doctor';
+      const titleKey = isDoctor ? 'dashboardTitleDoctor' : 'dashboardTitlePatient';
+      const descKey = isDoctor ? 'dashboardDescDoctor' : 'dashboardDescPatient';
+      const welcome = isDoctor ? t[state.lang].successWelcomeDoctor : t[state.lang].successWelcomePatient;
+
+      return `
+        <section class="min-h-[calc(100vh-4rem)] grid place-items-center py-10">
+          <div class="w-full max-w-4xl">
+            <div class="rounded-2xl soft-shadow border border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/70 backdrop-blur p-6 sm:p-8">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6">
+                <div class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-700 dark:text-brand-300 grid place-items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5ZM21 20a8.5 8.5 0 0 0-17 0 1 1 0 0 0 1 1h15a1 1 0 0 0 1-1Z"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <h2 class="text-2xl sm:text-3xl font-extrabold" data-i18n="${titleKey}">Dashboard</h2>
+                  <p class="text-neutral-600 dark:text-neutral-400" data-i18n="${descKey}">Description</p>
+                </div>
+                <button id="signOut" class="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/70 dark:hover:bg-neutral-800 font-medium focus-ring">
+                  <span data-i18n="signOut">Sign out</span>
+                </button>
+              </div>
+
+              <div class="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950/50 p-5 sm:p-6">
+                <div class="text-lg font-semibold mb-2">${welcome}, ${escapeHtml(state.user?.name || '')}!</div>
+                <div class="text-sm text-neutral-600 dark:text-neutral-400">
+                  This is a sample dashboard. Add, view, or manage demo records here.
+                </div>
+
+                <!-- Quick actions -->
+                <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <button class="px-4 py-3 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold focus-ring">New record</button>
+                  <button class="px-4 py-3 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/70 dark:hover:bg-neutral-800 text-sm font-semibold focus-ring">View records</button>
+                  <button class="px-4 py-3 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200/70 dark:hover:bg-neutral-800 text-sm font-semibold focus-ring">Share</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    // Helpers
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, s => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'
+      }[s]));
+    }
+
+    function bindInteractions() {
+      // Home buttons
+      document.getElementById('btnDoctor')?.addEventListener('click', () => navigate('/doctor-signin'));
+      document.getElementById('btnPatient')?.addEventListener('click', () => navigate('/patient-signin'));
+
+      // Back buttons
+      document.getElementById('backHome')?.addEventListener('click', () => navigate('/'));
+      document.getElementById('backToSignin')?.addEventListener('click', () => {
+        const role = state.role || 'patient';
+        navigate(role === 'doctor' ? '/doctor-signin' : '/patient-signin');
+      });
+      document.getElementById('backToHome')?.addEventListener('click', () => navigate('/'));
+
+      // Switch to signup
+      document.getElementById('goSignup')?.addEventListener('click', () => {
+        const role = state.role || 'patient';
+        navigate(role === 'doctor' ? '/doctor-signup' : '/patient-signup');
+      });
+
+      // Demo "sign in"
+      document.getElementById('signinForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = e.target.name.value.trim();
+        const email = e.target.email.value.trim();
+        const id = e.target.id.value.trim();
+        state.user = { name, email, id, role: state.role };
+        localStorage.setItem('tl_user', JSON.stringify(state.user));
+        navigate('/dashboard');
+      });
+
+      // Demo "sign up"
+      document.getElementById('signupForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = e.target.sname.value.trim();
+        const email = e.target.semail.value.trim();
+        const id = e.target.sid.value.trim();
+        state.user = { name, email, id, role: state.role };
+        localStorage.setItem('tl_user', JSON.stringify(state.user));
+        navigate('/dashboard');
+      });
+
+      // Sign out
+      document.getElementById('signOut')?.addEventListener('click', () => {
+        localStorage.removeItem('tl_user');
+        state.user = null;
+        navigate('/');
+      });
+    }
+
+    // Event listeners for header controls
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      applyTheme();
+    });
+    document.getElementById('langSelect').addEventListener('change', (e) => {
+      state.lang = e.target.value;
+      localStorage.setItem('tl_lang', state.lang);
+      applyStaticI18n();
+      render();
+    });
+
+    // Init
+    applyTheme();
+    window.addEventListener('hashchange', render);
+    // If user exists, head straight to dashboard
+    if (state.user) location.hash = '#/dashboard';
+    render();
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9812a78c95ff5966',t:'MTc1ODIxNzUwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

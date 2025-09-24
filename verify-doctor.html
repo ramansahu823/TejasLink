@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Verification</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="container" style="display:flex;justify-content:space-between;align-items:center;height:70px;">
+        <a href="index.html" class="box-link"><strong>Home</strong></a>
+    </nav>
+    <div class="registration-form" style="max-width:520px">
+        <h2>Verify Doctor License</h2>
+        <form id="verify-form">
+            <div class="form-group">
+                <label for="license">License Number</label>
+                <input type="text" id="license" name="license" placeholder="Enter NMC license no" required>
+            </div>
+            <button type="submit" class="form-submit-btn">Verify</button>
+        </form>
+        <div id="result" style="margin-top:15px;"></div>
+    </div>
+    <script>
+        async function verifyDoctor(licenseNo){
+            // Placeholder for NMC API integration
+            // const API_KEY = 'YOUR_NMC_API_KEY';
+            // const res = await fetch(`https://nmc.example/api/verify?license=${licenseNo}&key=${API_KEY}`);
+            // return await res.json();
+            return { ok: true, name: 'Sample Doctor', license: licenseNo };
+        }
+        document.getElementById('verify-form').addEventListener('submit', async (e)=>{
+            e.preventDefault();
+            const license = document.getElementById('license').value.trim();
+            const out = document.getElementById('result');
+            out.textContent = 'Verifying...';
+            const data = await verifyDoctor(license);
+            out.textContent = data.ok ? `Verified: ${data.name} (${data.license})` : 'Not found';
+        });
+    </script>
+</body>
+</html>
+
+

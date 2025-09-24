@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThejasLink – My Reports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Styles - Inherited from index.html for consistency */
+        :root {
+            --primary-color: #1e4db7;
+            --secondary-color: #0f1724;
+            --text-color: #333;
+            --background-color: #f0f2f5;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            padding-top: 50px; /* To prevent content from being hidden by the back button */
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--primary-color);
+            z-index: 10;
+        }
+
+        .section-box {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section-box h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+        
+        .report-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .report-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .report-item:last-child {
+            border-bottom: none;
+        }
+        
+        .report-details {
+            flex-grow: 1;
+        }
+        
+        .report-details h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: var(--text-color);
+        }
+        
+        .report-details p {
+            margin: 5px 0 0;
+            font-size: 0.9em;
+            color: #777;
+        }
+        
+        .report-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .report-actions button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .report-actions button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .form-submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .form-submit-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .analysis-box {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 5px;
+        }
+        
+        .analysis-box h3 {
+            margin-bottom: 10px;
+        }
+        
+        .analysis-box p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .section-box, .section-box * {
+                visibility: visible;
+            }
+            .section-box {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+                border: none;
+            }
+            .back-button, .report-actions, .add-report-form {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html#patient-dashboard" class="back-button"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+
+    <div class="container">
+        <h1>My Medical Reports</h1>
+
+        <div class="section-box add-report-section">
+            <h2>Add New Report</h2>
+            <form id="add-report-form" class="add-report-form">
+                <div class="form-group">
+                    <label for="report-hospital">Hospital/Clinic Name</label>
+                    <input type="text" id="report-hospital" placeholder="e.g., ThejasLink Hospital" required>
+                </div>
+                <div class="form-group">
+                    <label for="report-date">Date of Report</label>
+                    <input type="date" id="report-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="report-title">Report Title</label>
+                    <input type="text" id="report-title" placeholder="e.g., Blood Test Report" required>
+                </div>
+                <div class="form-group">
+                    <label for="report-file">Upload Report (PDF/Image)</label>
+                    <input type="file" id="report-file" accept=".pdf, .jpg, .jpeg, .png" required>
+                </div>
+                <div class="form-group">
+                    <label for="report-notes">Additional Notes</label>
+                    <textarea id="report-notes" rows="4" placeholder="Add any relevant notes..."></textarea>
+                </div>
+                <button type="submit" class="form-submit-btn">Save Report</button>
+            </form>
+        </div>
+
+        <div class="section-box previous-reports-section">
+            <h2>Previous Reports</h2>
+            <div id="reports-list">
+                <div class="report-item">
+                    <div class="report-details">
+                        <h3>Blood Test Report</h3>
+                        <p><strong>Hospital:</strong> City General Hospital</p>
+                        <p><strong>Date:</strong> 2023-09-15</p>
+                    </div>
+                    <div class="report-actions">
+                        <button onclick="viewAnalysis()">View Analysis</button>
+                        <button onclick="printReport()">Print</button>
+                    </div>
+                </div>
+                <div class="report-item">
+                    <div class="report-details">
+                        <h3>X-Ray Chest</h3>
+                        <p><strong>Hospital:</strong> ThejasLink Clinic</p>
+                        <p><strong>Date:</strong> 2023-08-20</p>
+                    </div>
+                    <div class="report-actions">
+                        <button onclick="viewAnalysis()">View Analysis</button>
+                        <button onclick="printReport()">Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="analysis-section" class="section-box hidden">
+            <h2>Report Analysis</h2>
+            <div class="analysis-box">
+                <p>This section would display a detailed analysis of the selected report. For example, it could highlight out-of-range values in a blood test, compare current results to previous ones, and provide insights based on the data provided.</p>
+                <p><b>Note:</b> This is a placeholder. A real-world application would use AI or a medical knowledge base to generate this analysis.</p>
+            </div>
+            <button class="form-submit-btn" onclick="hideAnalysis()">Close Analysis</button>
+        </div>
+
+    </div>
+
+    <script>
+        const viewAnalysis = () => {
+            document.getElementById('analysis-section').classList.remove('hidden');
+            window.scrollTo(0, document.body.scrollHeight);
+        };
+        
+        const hideAnalysis = () => {
+            document.getElementById('analysis-section').classList.add('hidden');
+        };
+        
+        const printReport = () => {
+            window.print();
+        };
+
+        document.getElementById('add-report-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const hospital = document.getElementById('report-hospital').value;
+            const date = document.getElementById('report-date').value;
+            const title = document.getElementById('report-title').value;
+            
+            // In a real application, you would send this data to a server
+            alert(`Report '${title}' from ${hospital} on ${date} saved successfully!`);
+            
+            // Simulate adding the new report to the list
+            const reportsList = document.getElementById('reports-list');
+            const newReportItem = document.createElement('div');
+            newReportItem.classList.add('report-item');
+            newReportItem.innerHTML = `
+                <div class="report-details">
+                    <h3>${title}</h3>
+                    <p><strong>Hospital:</strong> ${hospital}</p>
+                    <p><strong>Date:</strong> ${date}</p>
+                </div>
+                <div class="report-actions">
+                    <button onclick="viewAnalysis()">View Analysis</button>
+                    <button onclick="printReport()">Print</button>
+                </div>
+            `;
+            reportsList.prepend(newReportItem); // Add to the top of the list
+            
+            // Reset the form
+            e.target.reset();
+        });
+    </script>
+</body>
+
+</html>

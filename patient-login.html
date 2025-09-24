@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Patient Login - Demo Mode</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<nav class="container" style="display:flex;justify-content:space-between;align-items:center;height:70px;">
+		<a href="index.html" class="box-link" data-translate-key="navHome"><strong>Home</strong></a>
+        <div class="language-search-container">
+			<select id="languageSwitcher" aria-label="Select language">
+				<option value="en">English</option>
+				<option value="hi">हिंदी</option>
+				<option value="ml">മലയാളം</option>
+			</select>
+            <button id="themeToggle" class="theme-toggle" title="Toggle Theme">🌙</button>
+		</div>
+	</nav>
+
+	<section class="login-container container">
+		<h2>Patient Sign In (Demo Mode)</h2>
+		<p style="margin-bottom:12px;color:#666">Enter any phone and password to continue. No data is stored on server.</p>
+		<form id="demo-login-form">
+			<div class="form-group">
+				<label for="phone">Phone Number</label>
+				<input id="phone" name="phone" type="tel" placeholder="10-digit phone" required>
+			</div>
+			<div class="form-group">
+				<label for="password">Password</label>
+				<input id="password" name="password" type="password" placeholder="Enter any password" required>
+			</div>
+			<button class="form-submit-btn" type="submit">Sign In</button>
+		</form>
+	</section>
+
+	<script type="module">
+		import { onReady } from './assets/js/app.js';
+		import { signInDemoWithPhone } from './assets/js/authService.js';
+		onReady(() => {
+			const form = document.getElementById('demo-login-form');
+			form.addEventListener('submit', (e) => {
+				e.preventDefault();
+				const phone = document.getElementById('phone').value.trim();
+				const password = document.getElementById('password').value.trim();
+				const res = signInDemoWithPhone(phone, password);
+				if (res.ok) {
+					location.href = 'patient-dashboard.html';
+				} else {
+					alert(res.error || 'Sign in failed');
+				}
+			});
+		});
+	</script>
+</body>
+</html>
+
+

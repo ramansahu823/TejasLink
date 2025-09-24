@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <nav class="container" style="display:flex;justify-content:space-between;align-items:center;height:70px;">
+        <a href="index.html" class="box-link"><strong>Home</strong></a>
+        <div style="display:flex;align-items:center;gap:8px;">
+            <select id="languageSwitcher" aria-label="Select language">
+                <option value="en">English</option>
+                <option value="hi">हिंदी</option>
+                <option value="ml">മലയാളം</option>
+            </select>
+            <button id="themeToggle" class="theme-toggle" title="Toggle Theme">🌙</button>
+            <button id="btn-logout" class="btn btn-sm btn-secondary-outline">Logout</button>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>Patient Dashboard</h2>
+        <div class="section-box" id="personal-details"></div>
+        <div class="section-box">
+            <h3>My QR Code</h3>
+            <div id="qr-box" class="qrcode-box" style="display:inline-block;"></div>
+        </div>
+        <div class="section-box"><h3>Lab Reports</h3><div id="lab-reports"></div><div style="margin-top:8px"><input type="file" disabled><button data-action="upload" disabled class="btn btn-sm">Upload</button></div></div>
+        <div class="section-box"><h3>Prescriptions</h3><div id="prescriptions"></div></div>
+        <div class="section-box"><h3>Appointments</h3><div id="appointments"></div></div>
+        <div class="section-box"><h3>Medical History</h3><div id="medical-history"></div></div>
+        <div class="section-box"><h3>Health Summary</h3><button id="btn-health-pdf" class="form-submit-btn">Download PDF</button></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script type="module">
+        import { onReady } from './assets/js/app.js';
+        import { initDashboard } from './assets/js/dashboard.js';
+        onReady(() => initDashboard());
+    </script>
+</body>
+</html>
+
+

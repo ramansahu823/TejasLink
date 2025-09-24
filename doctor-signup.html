@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThejasLink – Doctor Sign Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Back</a>
+
+  <form id="doctor-signup-form" class="registration-form" aria-labelledby="doctor-reg-heading">
+    <h2 id="doctor-reg-heading">Doctor Registration</h2>
+    <div class="form-group">
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+    </div>
+    <div class="form-group">
+      <label for="dob">Date of Birth</label>
+      <input type="date" id="dob" name="dob" required>
+    </div>
+    <div class="form-group">
+      <label for="aadhaar">Aadhaar Number</label>
+      <input type="text" id="aadhaar" name="aadhaar" placeholder="12-digit Aadhaar" required>
+    </div>
+    <div class="form-group">
+      <label for="licenseNo">Medical Council Reg. No.</label>
+      <input type="text" id="licenseNo" name="licenseNo" placeholder="Your license number" required>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input type="tel" id="phone" name="phone" placeholder="10-digit phone" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="6+ chars with a number" required>
+    </div>
+    <button type="submit" class="form-submit-btn">Register</button>
+  </form>
+
+  <script type="module" src="assets/js/app.js"></script>
+  <script type="module" src="assets/js/auth.js"></script>
+</body>
+</html>

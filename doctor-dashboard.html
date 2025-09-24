@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+    <nav class="container" style="display:flex;justify-content:space-between;align-items:center;height:70px;">
+        <a href="index.html" class="box-link"><strong>Home</strong></a>
+        <div class="language-search-container">
+            <select id="languageSwitcher" aria-label="Select language">
+                <option value="en">English</option>
+                <option value="hi">हिंदी</option>
+                <option value="ml">മലയാളം</option>
+            </select>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>Doctor Dashboard</h2>
+        <div class="section-box">
+            <h3>Find Patient</h3>
+            <div class="form-group">
+                <label for="search-id">Search by Patient ID</label>
+                <input type="text" id="search-id" placeholder="PAT-...">
+                <button class="form-submit-btn" id="search-btn">Search</button>
+            </div>
+            <div class="form-group">
+                <label>Or scan QR</label>
+                <div id="qr-reader" style="width:300px;max-width:100%;"></div>
+            </div>
+        </div>
+
+        <div id="patient-details" class="section-box hidden"></div>
+
+        <div id="today-entry" class="section-box hidden">
+            <h3>Today Entry</h3>
+            <form id="entry-form">
+                <div class="form-group">
+                    <label for="problem">Problem</label>
+                    <select id="problem" name="problem" multiple required>
+                        <option>Fever</option>
+                        <option>Headache</option>
+                        <option>Cough</option>
+                        <option>Cold</option>
+                        <option>Allergy</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="prescription">Prescription</label>
+                    <textarea id="prescription" name="prescription" rows="3" placeholder="Medicines and dosage"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="Additional notes"></textarea>
+                </div>
+                <button class="form-submit-btn" type="submit">Save Entry</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { onReady } from './assets/js/app.js';
+        import { findPatientById, upsertPatientRecord } from './assets/js/storage.js';
+        onReady(() => {
+            const details = document.getElementById('patient-details');
+            const entryBox = document.getElementById('today-entry');
+            let currentId = '';
+
+            function renderPatient(p) {
+                if (!p) { details.classList.add('hidden'); entryBox.classList.add('hidden'); return; }
+                details.classList.remove('hidden');
+                entryBox.classList.remove('hidden');
+                details.innerHTML = `
+                    <h3>Patient: ${p.fullName}</h3>
+                    <p><strong>ID:</strong> ${p.patientId}</p>
+                    <p><strong>DOB:</strong> ${p.dob}</p>
+                    <p><strong>Phone:</strong> ${p.phone}</p>
+                    <p><strong>Email:</strong> ${p.email}</p>
+                    <h4 style="margin-top:15px;">History</h4>
+                    <ul>${(p.history||[]).map(h=>`<li>${h.createdAt.split('T')[0]}: ${h.problem?.join(', ')||''}</li>`).join('')||'<li>No entries yet.</li>'}</ul>
+                `;
+            }
+
+            document.getElementById('search-btn').addEventListener('click', () => {
+                const id = (document.getElementById('search-id').value||'').trim();
+                currentId = id;
+                renderPatient(findPatientById(id));
+            });
+
+            // QR scanner
+            const qr = new Html5Qrcode('qr-reader');
+            qr.start({ facingMode: 'environment' }, { fps: 10, qrbox: 200 }, (text) => {
+                currentId = text;
+                renderPatient(findPatientById(text));
+                qr.stop();
+            });
+
+            document.getElementById('entry-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!currentId) return alert('Select patient first.');
+                const problem = Array.from(document.getElementById('problem').selectedOptions).map(o=>o.value);
+                const prescription = document.getElementById('prescription').value;
+                const notes = document.getElementById('notes').value;
+                if (upsertPatientRecord(currentId, { problem, prescription, notes })) {
+                    alert('Entry saved.');
+                    renderPatient(findPatientById(currentId));
+                    e.target.reset();
+                } else {
+                    alert('Failed to save, patient not found.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+

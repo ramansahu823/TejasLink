@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ThejasLink - Home</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<header class="main">
+		<div class="box"></div>
+		<nav class="container">
+			<a href="index.html" class="box-link active" data-translate-key="navHome"><strong>Home</strong></a>
+            <div class="language-search-container">
+				<select id="languageSwitcher" aria-label="Select language">
+					<option value="en">English</option>
+					<option value="hi">हिंदी</option>
+					<option value="ml">മലയാളം</option>
+				</select>
+                <button id="themeToggle" class="theme-toggle" title="Toggle Theme">🌙</button>
+				<a class="form-submit-btn" href="patient-login.html">Patient Login</a>
+			</div>
+		</nav>
+		<div class="hero">
+			<span>Unified Healthcare Access</span>
+			<span>Manage your reports, prescriptions, and appointments securely.</span>
+			<span>Try our fully client-side Demo Mode now.</span>
+		</div>
+	</header>
+	<div class="separation"></div>
+	<section class="dashboard-container container">
+		<h2>Explore ThejasLink</h2>
+		<div class="dashboard-grid">
+			<a class="box-link" href="patient-login.html">
+				<div class="portal-box">
+					<div class="icon">👤</div>
+					<h3>Patient Portal</h3>
+				</div>
+			</a>
+			<div class="portal-box">
+				<div class="icon">🧪</div>
+				<h3>Lab Reports</h3>
+			</div>
+			<div class="portal-box">
+				<div class="icon">💊</div>
+				<h3>Prescriptions</h3>
+			</div>
+			<div class="portal-box">
+				<div class="icon">📅</div>
+				<h3>Appointments</h3>
+			</div>
+		</div>
+	</section>
+
+	<script type="module" src="./assets/js/app.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThejasLink – Healthcare Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@600&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+        <link rel="stylesheet" href="style.css">
+    
+</head>
+
+<body>
+    <div id="main-page">
+        <div class="main">
+            <nav role="navigation" aria-label="Main navigation" class="container" style="display:flex;justify-content:space-between;align-items:center;height:100px;">
+                <span>
+                    <img width="130" src="https://placehold.co/130x40/1e4db7/ffffff?text=ThejasLink" alt="ThejasLink Logo">
+                </span>
+                <div style="display:flex;gap:16px;align-items:center;">
+                    <a href="index.html" class="box-link" data-translate-key="navHome">Home</a>
+                    <a href="about.html" class="box-link" data-translate-key="navAbout">About</a>
+                    <a href="about.html#contact" class="box-link" data-translate-key="navContact">Contact</a>
+                    <a href="login.html" class="form-submit-btn" data-translate-key="navLogin">Login/Signup</a>
+                    <select id="languageSwitcher" aria-label="Select language">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="ml">മലയാളം</option>
+                    </select>
+                </div>
+            </nav>
+            <div class="box"></div>
+            <div class="hero">
+                <h1 id="heroTitle">ThejasLink</h1>
+                <p id="heroTagline">A Step Towards Fair & Accessible Healthcare</p>
+                <p id="heroDesc">Your Health, Your Records, Anytime, Anywhere.</p>
+            </div>
+            <div class="separation"></div>
+        </div>
+
+        <section class="role-selection" aria-label="User role selection">
+            <div class="role-card">
+                <i class="fas fa-user-injured" aria-hidden="true"></i>
+                <h3>I'm a Patient</h3>
+                <p>View your records, find doctors, and get health alerts.</p>
+                <div style="margin-top: 15px;">
+                    <a class="form-submit-btn" href="patient-signup.html">Sign Up</a>
+                    <a class="form-submit-btn" href="login.html">Sign In</a>
+                </div>
+            </div>
+            <div class="role-card">
+                <i class="fas fa-user-md" aria-hidden="true"></i>
+                <h3>I'm a Doctor</h3>
+                <p>Manage patients, view data, and issue health advisories.</p>
+                <div style="margin-top: 15px;">
+                    <a class="form-submit-btn" href="doctor-signup.html">Sign Up</a>
+                    <a class="form-submit-btn" href="login.html">Sign In</a>
+                </div>
+            </div>
+        </section>
+
+        <div class="separation"></div>
+        <section class="faq" aria-labelledby="faqTitle">
+            <h2 id="faqTitle">Frequently Asked Questions</h2>
+            <div class="faqbox" tabindex="0" role="button" aria-expanded="false" aria-controls="answer1">
+                <span id="faq1">What is ThejasLink?</span>
+                <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 15L18 9L12 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="rotate(90 12 9)"/>
+                </svg>
+            </div>
+            <div class="faq-answer" id="answer1" role="region">
+                <p>ThejasLink is a centralized healthcare platform that allows patients to securely access their medical records, prescriptions, and test results from anywhere. It also provides a dashboard for doctors to manage appointments, patients, and records efficiently.</p>
+            </div>
+            <div class="faqbox" tabindex="0" role="button" aria-expanded="false" aria-controls="answer2">
+                <span id="faq2">Is my data secure?</span>
+                <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 15L18 9L12 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="rotate(90 12 9)"/>
+                </svg>
+            </div>
+            <div class="faq-answer" id="answer2" role="region">
+                <p>Yes, your data is highly secure. We use advanced encryption protocols and adhere to strict privacy standards to ensure your medical information is protected at all times.</p>
+            </div>
+            <div class="faqbox" tabindex="0" role="button" aria-expanded="false" aria-controls="answer3">
+                <span id="faq3">Can I access my records offline?</span>
+                <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 15L18 9L12 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="rotate(90 12 9)"/>
+                </svg>
+            </div>
+            <div class="faq-answer" id="answer3" role="region">
+                <p>Currently, ThejasLink requires an internet connection to access and sync your records. We are working on an offline access feature for future updates.</p>
+            </div>
+            <div class="faqbox" tabindex="0" role="button" aria-expanded="false" aria-controls="answer4">
+                <span id="faq4">How do I contact support?</span>
+                <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 15L18 9L12 3" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="rotate(90 12 9)"/>
+                </svg>
+            </div>
+            <div class="faq-answer" id="answer4" role="region">
+                <p>You can contact our support team by clicking the "Contact Support" link in the dashboard or by calling the number provided at the bottom of the page. We are available 24/7 to assist you.</p>
+            </div>
+        </section>
+
+        <footer id="footer" role="contentinfo">
+            <div class="questions"><span id="footerQuestion">Questions? Call 000-800-919-1694</span></div>
+        </footer>
+    </div>
+    <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    <div id="patient-reg-page" class="hidden">
+        <form class="registration-form" aria-labelledby="patient-reg-heading">
+            <h2 id="patient-reg-heading">Patient Registration</h2>
+            <div class="form-group">
+                <label for="patient-name">Full Name</label>
+                <input type="text" id="patient-name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="patient-address">Address</label>
+                <input type="text" id="patient-address" placeholder="Enter your address" required>
+            </div>
+            <div class="form-group">
+                <label for="patient-dob">Date of Birth</label>
+                <input type="date" id="patient-dob" required>
+            </div>
+            <div class="form-group">
+                <label for="patient-aadhar">Aadhar Card Number</label>
+                <input type="text" id="patient-aadhar" placeholder="Enter 12-digit Aadhar number" pattern="\d{12}" required>
+            </div>
+            <button type="button" id="patient-verify-btn" class="form-submit-btn">Proceed with OTP Verification</button>
+            <div class="form-group hidden" id="patient-otp-section">
+                <label for="patient-mobile">Mobile Number</label>
+                <input type="tel" id="patient-mobile" placeholder="Enter mobile number linked to Aadhar" pattern="\d{10}" required disabled>
+                <div style="margin-top: 10px;">
+                    <label for="patient-otp">OTP</label>
+                    <input type="text" id="patient-otp" placeholder="Enter OTP" disabled>
+                    <button type="button" id="send-otp-btn" class="form-submit-btn">Send OTP</button>
+                </div>
+            </div>
+            <button type="button" id="register-patient-btn" class="form-submit-btn hidden">Register</button>
+        </form>
+    </div>
+
+    <!-- <div id="doctor-reg-page" class="hidden">
+        <form class="registration-form" aria-labelledby="doctor-reg-heading">
+            <h2 id="doctor-reg-heading">Doctor Registration</h2>
+            <div class="form-group">
+                <label for="doctor-name">Full Name</label>
+                <input type="text" id="doctor-name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="doctor-address">Address</label>
+                <input type="text" id="doctor-address" placeholder="Enter your address" required>
+            </div>
+            <div class="form-group">
+                <label for="doctor-dob">Date of Birth</label>
+                <input type="date" id="doctor-dob" required>
+            </div>
+            <div class="form-group">
+                <label for="doctor-aadhar">Aadhar Card Number</label>
+                <input type="text" id="doctor-aadhar" placeholder="Enter 12-digit Aadhar number" pattern="\d{12}" required>
+            </div>
+            <div class="form-group">
+                <label for="doctor-reg-number">Medical Council Reg. No.</label>
+                <input type="text" id="doctor-reg-number" placeholder="Enter your Medical Council Registration Number" required>
+            </div>
+            <button type="button" id="doctor-verify-btn" class="form-submit-btn">Proceed with OTP Verification</button>
+            <div class="form-group hidden" id="doctor-otp-section">
+                <label for="doctor-mobile">Mobile Number</label>
+                <input type="tel" id="doctor-mobile" placeholder="Enter mobile number linked to Aadhar" pattern="\d{10}" required disabled>
+                <div style="margin-top: 10px;">
+                    <label for="doctor-otp">OTP</label>
+                    <input type="text" id="doctor-otp" placeholder="Enter OTP" disabled>
+                    <button type="button" id="send-otp-btn-doctor" class="form-submit-btn">Send OTP</button>
+                </div>
+            </div>
+            <button type="button" id="register-doctor-btn" class="form-submit-btn hidden">Register</button>
+        </form>
+    </div>
+
+    <div id="qrcode-page" class="hidden">
+        <div class="qrcode-page-container">
+            <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+            <h2>Registration Successful!</h2>
+            <p>Your unique QR code and ID have been generated. **Click Copy to save your ID and Print to download/print your ID card.**</p>
+            <div id="qrcode-box" class="qrcode-box"></div>
+            <p id="unique-id-text" class="unique-id-text">
+                Unique ID: <span id="user-unique-id"></span>
+                <button class="copy-button" onclick="copyUniqueId()">Copy ID</button>
+            </p>
+            <button id="print-qrcode-btn" class="form-submit-btn" onclick="window.print()">Print ID Card</button>
+            <p style="margin-top: 15px;">**Important**: Do not share your QR code.</p>
+        </div>
+    </div> -->
+
+    <div id="login-page" class="hidden">
+        <div class="login-container">
+            <h2 id="login-heading">Scan QR Code or Enter ID to Log In</h2>
+            <div id="qr-reader" style="width:100%;"></div>
+            <hr style="margin: 20px 0; border: 1px solid #ddd;">
+            <h3>Or login with Unique ID</h3>
+            <div class="form-group">
+                <label for="login-unique-id">Unique ID</label>
+                <input type="text" id="login-unique-id" placeholder="Enter your unique ID" required>
+            </div>
+            <button id="login-unique-id-btn" class="form-submit-btn">Login with ID</button>
+        </div>
+    </div>
+
+    <div id="patient-dashboard" class="hidden">
+        <div class="dashboard-container">
+            <h2>Patient Dashboard</h2>
+            <div class="dashboard-grid">
+                <a href="reports.html" class="box-link">
+                    <div class="portal-box">
+                        <span class="icon">📄</span>
+                        <h3>Reports</h3>
+                    </div>
+                </a>
+                <a href="prescription.html" class="box-link">
+                    <div class="portal-box">
+                        <span class="icon">💊</span>
+                        <h3>Prescriptions</h3>
+                    </div>
+                </a>
+                <a href="hospitals.html" class="box-link" >
+                    <div class="portal-box">
+                        <span class="icon">🏥</span>
+                        <h3>Nearby Hospitals</h3>
+                    </div>
+                </a>
+                <a href="alert.html" class="box-link">
+                    <div class="portal-box">
+                        <span class="icon">🔔</span>
+                        <h3>Alerts & Precautions</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="doctor-dashboard" class="hidden">
+        <div class="dashboard-container">
+            <h2>Doctor Dashboard</h2>
+            <div class="dashboard-grid">
+                <a href="#" class="box-link" onclick="showContent('view-reports-content'); return false;">
+                    <div class="portal-box">
+                        <span class="icon">📂</span>
+                        <h3>View/Edit Reports</h3>
+                    </div>
+                </a>
+                <a href="#" class="box-link" onclick="showContent('write-prescriptions-content'); return false;">
+                    <div class="portal-box">
+                        <span class="icon">✍️</span>
+                        <h3>Write/Edit Prescriptions</h3>
+                    </div>
+                </a>
+                <a href="#" class="box-link" onclick="showContent('manage-patients-content'); return false;">
+                    <div class="portal-box">
+                        <span class="icon">👥</span>
+                        <h3>Manage Patients</h3>
+                    </div>
+                </a>
+                <a href="#" class="box-link" onclick="showContent('health-alerts-content'); return false;">
+                    <div class="portal-box">
+                        <span class="icon">📢</span>
+                        <h3>Issue Health Alerts</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="reports-content" class="hidden container">
+        <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+        <h2>Reports</h2>
+        <p>This is where you can view and upload your medical reports. You can also edit them here.</p>
+        <button onclick="showPage('patient-dashboard')" class="form-submit-btn">Back to Dashboard</button>
+    </div>
+    
+   <div id="prescriptions-content" class="hidden container">
+    <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+    <h2>Prescriptions</h2>
+    <div class="form-group">
+        <label for="patient-search-id">Search Patient by Unique ID</label>
+        <input type="text" id="patient-search-id" placeholder="Enter patient's unique ID">
+        <button class="form-submit-btn" onclick="searchPatient()">Search</button>
+    </div>
+    <div id="patient-data" class="hidden">
+        <h3>Previous Reports</h3>
+        <p id="previous-reports-placeholder">No previous reports found for this patient.</p>
+        <button onclick="document.getElementById('file-attach').click()" class="form-submit-btn">Attach Report</button>
+        <input type="file" id="file-attach" class="hidden">
+
+        <h3>Previous Prescriptions</h3>
+        <table id="prescription-table">
+            <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Dosage</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody id="prescription-body">
+                </tbody>
+        </table>
+
+        <h3>Add New Prescription</h3>
+        <div class="form-group">
+            <label for="med-name">Medicine Name</label>
+            <input type="text" id="med-name" placeholder="e.g., Paracetamol">
+        </div>
+        <div class="form-group">
+            <label for="med-dosage">Dosage</label>
+            <input type="text" id="med-dosage" placeholder="e.g., 500mg">
+        </div>
+        <div class="form-group">
+            <label for="med-frequency">Frequency (times/day)</label>
+            <input type="number" id="med-frequency" min="1" max="10">
+        </div>
+        <div class="form-group">
+            <label for="med-duration">Duration (days)</label>
+            <input type="number" id="med-duration" min="1">
+        </div>
+        <div class="form-group">
+            <label for="med-notes">Notes for Patient</label>
+            <textarea id="med-notes" rows="3" placeholder="Add additional instructions here..."></textarea>
+        </div>
+        <button class="form-submit-btn" onclick="addPrescription()">Submit Prescription</button>
+    </div>
+    <button onclick="showPage('doctor-dashboard')" class="form-submit-btn">Back to Dashboard</button>
+</div>
+
+    <div id="nearby-hospital-content" class="hidden container">
+        <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+        <h2>Nearby Hospitals</h2>
+        <p>This section will show you a list of nearby hospitals and clinics based on your location.</p>
+        <button onclick="showPage('patient-dashboard')" class="form-submit-btn">Back to Dashboard</button>
+    </div>
+
+    <div id="alerts-content" class="hidden container">
+        <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+        <h2>Alerts & Precautions</h2>
+        <p>This is where you'll find health alerts and precautions for your region.</p>
+        <button onclick="showPage('patient-dashboard')" class="form-submit-btn">Back to Dashboard</button>
+    </div>
+
+    <div id="prescriptions-content" class="hidden container">
+    <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+    <h2>Prescriptions</h2>
+    <p>View your prescriptions here. You can add notes or details to them.</p>
+    <button onclick="showPage('patient-dashboard')" class="form-submit-btn">Back to Dashboard</button>
+</div>
+
+    <div id="health-alerts-content" class="hidden container">
+        <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+        <h2>Issue Health Alerts</h2>
+        <div class="form-group">
+            <label for="alert-region">Select Region</label>
+            <select id="alert-region">
+                <option value="jaipur">Jaipur</option>
+                <option value="delhi">Delhi</option>
+                <option value="mumbai">Mumbai</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="alert-message">Alert Message</label>
+            <textarea id="alert-message" rows="5" placeholder="Enter alert details and precautions"></textarea>
+        </div>
+        <p id="alert-preview-text">Alert will notify <span id="patient-count">0</span> patients in <span id="region-name">Jaipur</span>.</p>
+        <button id="publish-alert-btn" class="form-submit-btn">Publish Alert</button>
+        <button onclick="showPage('doctor-dashboard')" class="form-submit-btn">Back to Dashboard</button>
+    </div>
+<script type="module" src="assets/js/app.js"></script>
+   
+</body>
+
+</html>
